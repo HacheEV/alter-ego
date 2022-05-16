@@ -8,16 +8,10 @@ interface Profile{
     username:string;
     role: number;
 }
-const Home: NextPage = () => {
+const Conversations: NextPage = () => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
-
-    useEffect(() => {
-        if (!user) {
-            router.push('/login')
-        }
-    }, [user])
 
     const getProfile = async () => {
         try {
@@ -32,6 +26,10 @@ const Home: NextPage = () => {
     }
     useEffect( () => {
         getProfile()
+        if(profile?.role === 2){
+            router.push('/')
+        }
+
     }, [setProfile])
 
     const handleLogout = async () => {
@@ -44,6 +42,7 @@ const Home: NextPage = () => {
         <>
             {user ? (
                 <>
+                    <div className="text-5xl font-bold">Conversations</div>
                     <div className="text-5xl font-bold">Bienvido {profile?.username}</div>
                     <button
                         onClick={handleLogout}
@@ -52,15 +51,13 @@ const Home: NextPage = () => {
                     >
                         Log out
                     </button>
-                    {profile?.role === 1 && (
-                        <button
-                            onClick={() => router.push('/conversations')}
-                            type="button"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            Conversations
-                        </button>
-                    )}
+                    <button
+                        onClick={() => router.push('/')}
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Go back
+                    </button>
                 </>
             ) : <span>Redirecting...</span>}
 
@@ -68,4 +65,4 @@ const Home: NextPage = () => {
     )
 }
 
-export default Home
+export default Conversations
