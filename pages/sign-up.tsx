@@ -25,7 +25,8 @@ export default function SignUp() {
                 }
             }
         } catch (error:any) {
-            alert(error.error_description || error.message)
+            console.log(error)
+            alert(JSON.stringify(error));
         } finally {
             setLoading(false)
         }
