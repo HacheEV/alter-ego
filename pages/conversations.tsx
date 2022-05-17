@@ -2,6 +2,7 @@ import type {NextPage} from 'next'
 import {supabase} from "../utils/supabase-client";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
+import Image from 'next/image'
 
 interface Profile{
     id:string;
@@ -12,6 +13,7 @@ const Conversations: NextPage = () => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
+    const [conversations, setConversations] = useState<any>()
 
     const getProfile = async () => {
         try {
@@ -37,13 +39,22 @@ const Conversations: NextPage = () => {
         if(error) console.log(error)
         router.push('/login')
     }
-    console.log(profile)
+    const getConversations = async () => {
+        const {data, error} = await supabase.from('conversations').select("*")
+
+        if(data) setConversations(data)
+    }
+    useEffect(() => {
+        getConversations()
+    },[])
+
+    console.log(conversations)
     return (
         <>
             {user ? (
                 <>
                     <div className="text-5xl font-bold">Conversations</div>
-                    <div className="text-5xl font-bold">Bienvido {profile?.username}</div>
+                    <div className="text-5xl font-bold">Bienvenido {profile?.username}</div>
                     <button
                         onClick={handleLogout}
                         type="button"
@@ -58,6 +69,18 @@ const Conversations: NextPage = () => {
                     >
                         Go back
                     </button>
+                    <div className={"w-full border-2 border-green-500"}>
+                        {conversations && conversations.map((conversation: any) => {
+                            return (
+                                <>
+                                    <span>conversation.user_id</span>
+                                    <Image src={conversation.app_selfie} width={100} height={100} />
+                                    <Image src={conversation.user_selfie} width={100} height={100} />
+                                </>
+
+                            )
+                        })}
+                    </div>
                 </>
             ) : <span>Redirecting...</span>}
 

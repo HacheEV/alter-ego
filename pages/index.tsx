@@ -7,6 +7,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import {classNames} from "../utils/classnames";
 import Image from "next/image";
+import moment from "moment";
 
 interface Profile {
     id: string;
@@ -22,6 +23,8 @@ const Home: NextPage = () => {
     const [userImages, setUserImages] = useState<string[]>([])
     const [imageCounter, setImageCounter] = useState<number>(0)
     const [imageUploaded, setImageUploaded] = useState<File>()
+    const [endGame, setEndGame] = useState<boolean>(false)
+    const [conversation, setConversation] = useState<any>([])
 
     const amountImages: number[] = [1, 2, 3]
     const randomImage: number = amountImages[Math.floor(Math.random() * amountImages.length)]
@@ -33,10 +36,14 @@ const Home: NextPage = () => {
     }, [user])
 
     const getImageRandom = async () => {
-        const {data, error} = await supabase.storage.from('public/bucket').download(`app_selfies/${randomImage}.jpg`)
-        // @ts-ignore
-        const url = URL.createObjectURL(data)
-        setImageUrls([...imageUrls, url]);
+        const { publicURL, error } = supabase
+            .storage
+            .from('bucket')
+            .getPublicUrl(`app_selfies/${randomImage}.jpg`  )
+        if(publicURL !== null){
+            setImageUrls([...imageUrls, publicURL]);
+        }
+
     }
     const handleImage = () => {
         getImageRandom()
@@ -65,8 +72,6 @@ const Home: NextPage = () => {
     const navigation = [
         { name: 'Conversations', href: '/conversations', current: true }
     ]
-    console.log(imageUrls)
-
     const handleUploadImage = (e:any) => {
         if (!e.target.files || e.target.files.length === 0) {
             throw new Error('You must select an image to upload.')
@@ -89,20 +94,37 @@ const Home: NextPage = () => {
                     throw uploadError
                 }
                 if(data){
-                    const {data, error} = await supabase.storage.from('public/bucket').download(fileName)
+                    // const {data, error} = await supabase.storage.from('public/bucket').download(fileName)
+                    const { publicURL, error } = supabase
+                        .storage
+                        .from('bucket')
+                        .getPublicUrl(fileName)
+                    console.log(publicURL)
                     // @ts-ignore
-                    const url = URL.createObjectURL(data)
-                    setUserImages([...userImages, url]);
+                    // const url = URL.createObjectURL(data)
+                    setUserImages([...userImages, publicURL]);
                 }
             }
         } catch (error:any) {
             alert(error.message)
         }
     }
-    console.log("images alter ego")
-    console.log(imageUrls)
-    console.log("user Images")
-    console.log(userImages)
+    if(imageCounter === 4){
+        setEndGame(true)
+
+    }
+    const saveConversation = async () => {
+        const conversation = imageUrls.map(image => {
+            return {app_file: image, created_at: Date.now()}
+        })
+        const { data, error } = await supabase
+            .from('conversations')
+            .upsert([{"id": "123", "user_id": profile?.id,
+                "app_selfie": "blob:http://localhost:3000/b263b476-b434-42b2-a6c7-d70ff969b89e",
+                "user_selfie": "blob:http://localhost:3000/b263b476-b434-42b2-a6c7-d70ff969b89e",
+                "created_at": moment().format()}])
+    }
+    // saveConversation()
     return (
         <>
             {user ? (
