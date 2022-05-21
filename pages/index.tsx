@@ -7,6 +7,7 @@ import {classNames} from "../utils/classnames";
 import Image from "next/image";
 import moment from "moment";
 import { makeId } from '../utils/utils'
+import NotAllowed from "../components/not-allowed";
 
 interface Profile {
     id: string;
@@ -232,7 +233,7 @@ const Home: NextPage = () => {
                         </main>
                     </div>
                 </>
-            ) : <span>Redirecting...</span>}
+            ) : <NotAllowed />}
 
         </>
     )

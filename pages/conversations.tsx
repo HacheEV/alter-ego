@@ -4,6 +4,7 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import Image from 'next/image'
 import {MailIcon, PhoneIcon} from "@heroicons/react/solid";
+import NotAllowed from "../components/not-allowed";
 
 interface Profile {
     id: string;
@@ -16,6 +17,12 @@ const Conversations: NextPage = () => {
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
     const [conversations, setConversations] = useState<any>([])
+
+    useEffect(() => {
+        if (!user) {
+            router.push('/login')
+        }
+    }, [user])
 
     const getProfile = async () => {
         try {
@@ -50,7 +57,6 @@ const Conversations: NextPage = () => {
         getConversations()
     }, [])
 
-    console.log(conversations)
     return (
         <>
             {user ? (
@@ -104,7 +110,7 @@ const Conversations: NextPage = () => {
                         </div>
                     </main>
                 </>
-            ) : <span>Redirecting...</span>}
+            ) : <NotAllowed />}
 
         </>
     )

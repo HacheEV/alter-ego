@@ -3,12 +3,19 @@ import {useRouter} from "next/router";
 import {supabase} from "../../utils/supabase-client";
 import {useEffect, useState} from "react";
 import Image from "next/image";
+import NotAllowed from "../../components/not-allowed";
 
 const ConversationId: NextPage = () => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<any>()
     const [conversationDetail, setConversationDetail] = useState<any>([])
+
+    useEffect(() => {
+        if (!user) {
+            router.push('/login')
+        }
+    }, [user])
 
     const {id} = router.query
 
@@ -81,8 +88,7 @@ const ConversationId: NextPage = () => {
                         </div>
                     </main>
                 </>
-            ) : <span>Redirecting...</span>}
-
+            ) : <NotAllowed />}
         </>
     )
 }
