@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { supabase } from '../utils/supabase-client'
 import {useRefreshRoot} from "next/dist/client/streaming/refresh";
 import {useRouter} from "next/router";
+import AvatarSpinner from "../components/avatar-spinner";
 
 export default function Auth() {
     const router = useRouter()
@@ -26,7 +27,7 @@ export default function Auth() {
         <>
             <div className="min-h-full flex flex-col justify-center items-center bg-dark h-screen text-white px-2 py-3">
                 <div className="w-full flex flex-col items-center justify-center h-full border-[1px] border-whiteBorder rounded-[25px] m-2">
-                    <h1 className={"my-4"}>Login</h1>
+                    <h1 className={"my-4 text-xl"}>Login</h1>
                     <div className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
                             <div>
                                 <label htmlFor="email" className="hidden">
@@ -64,7 +65,7 @@ export default function Auth() {
                                 </div>
                             </div>
                         <button className={"mb-8"} onClick={() => router.push('/sign-up')}>
-                            <span className={"text-sm ml-1 text-gray-400"}>Are you already registered?</span>
+                            <span className={"text-sm ml-1 text-gray-400"}>Are you not registered yet?</span>
                         </button>
 
 
