@@ -24,35 +24,32 @@ export default function Auth() {
     }
     return (
         <>
-            <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login</h2>
-                </div>
-
-                <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                    <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="min-h-full flex flex-col justify-center items-center bg-dark h-screen text-white px-2 py-3">
+                <div className="w-full flex flex-col items-center justify-center h-full border-[1px] border-whiteBorder rounded-[25px] m-2">
+                    <h1 className={"my-4"}>Login</h1>
+                    <div className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="email" className="hidden">
                                     Email address
                                 </label>
-                                <div className="mt-1">
+                                <div className="mb-6">
                                     <input
                                         id="email"
                                         name="email"
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        autoComplete="email"
                                         required
-                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder={"What's your email?"}
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="password" className="hidden">
                                     Password
                                 </label>
-                                <div className="mt-1">
+                                <div className="mb-2">
                                     <input
                                         id="password"
                                         name="password"
@@ -61,10 +58,15 @@ export default function Auth() {
                                         onChange={(e)=> setPassword(e.target.value)                                        }
                                         autoComplete="current-password"
                                         required
-                                        className="appearance-none block w-full mb-8 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder={"What's your password?"}
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                                     />
                                 </div>
                             </div>
+                        <button className={"mb-8"} onClick={() => router.push('/sign-up')}>
+                            <span className={"text-sm ml-1 text-gray-400"}>Are you already registered?</span>
+                        </button>
+
 
                             <div>
                                 <button

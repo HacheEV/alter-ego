@@ -33,9 +33,9 @@ const Home: NextPage = () => {
     const [conversation, setConversation] = useState<Conversation[] | any>([])
     const [conversationId, setConversationId] = useState<string>("")
 
-    useMemo(() => {
+    useEffect(() => {
         setConversationId(makeId(12))
-    }, [user])
+    }, [user?.id])
 
     const amountImages: number[] = [1, 2, 3]
     const randomImage: number = amountImages[Math.floor(Math.random() * amountImages.length)]
@@ -92,11 +92,26 @@ const Home: NextPage = () => {
     const navigation = [
         { name: 'Conversations', href: '/conversations', current: true }
     ]
-    const handleUploadImage = (e:any) => {
+    const handleUploadImage = async (e:any) => {
         if (!e.target.files || e.target.files.length === 0) {
             throw new Error('You must select an image to upload.')
         }
         setImageUploaded(e.target.files[0])
+        const conversationObject = {
+            id: conversationId,
+            user_id: user?.id,
+            email: user?.email
+        }
+        // TODO: DO DE PAGE BY CONVERSATION ID LIKE IG CHAT
+        if(conversation.length === 0){
+            const { data, error } = await supabase
+                .from('conversations')
+                .insert([conversationObject])
+            if(data)console.log(data)
+            if(error){
+                console.log(error)
+            }
+        }
     }
 
     const uploadImage = async (e: any) => {
@@ -119,7 +134,6 @@ const Home: NextPage = () => {
                         setUserImage(publicURL)
                         const firstConversation = {
                             id: conversationId,
-                            user_id: profile?.id,
                             app_selfie: imageUrl,
                             user_selfie: publicURL,
                             created_at: moment().format()
@@ -137,7 +151,7 @@ const Home: NextPage = () => {
 
     const saveConversation = async () => {
         const { data, error } = await supabase
-            .from('conversations')
+            .from('conversation_detail')
             .upsert(conversation)
         if(data) console.log(data);
         if(error) console.log(error);
