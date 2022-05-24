@@ -13,6 +13,7 @@ const Welcome: NextPage = () => {
     const [showMessage, setShowMessage] = useState<boolean>(false)
     const [showQR, setShowQR] = useState<boolean>(false)
     const intersectionRef = useRef(null);
+    const text = "I think you are an interesting person, let's get to know each other if it's ok with you"
     const intersection = useIntersection(intersectionRef, {
         root: null,
         rootMargin: '0px',
@@ -74,7 +75,7 @@ const Welcome: NextPage = () => {
                                     enterFrom="opacity-0 transform translate-y-20"
                                     enterTo="opacity-100 transform translate-y-4"
                                 >
-                                    <span className={"text-2xl text-gray-400 mt-5 leading-[1.375rem]"}>I think you are an interesting person, let's get to know each other if it's ok with you</span>
+                                    <span className={"text-2xl text-gray-400 mt-5 leading-[1.375rem]"}>{text}</span>
                                 </Transition>
                             </div>
                         </div>
