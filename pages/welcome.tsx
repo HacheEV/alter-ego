@@ -35,6 +35,11 @@ const Welcome: NextPage = () => {
         }
     }, [intersection])
 
+    console.log("inter")
+    console.log(intersection?.isIntersecting)
+    console.log("showQR")
+    console.log(showQR)
+
     return (
         <div className={"bg-dark"}>
             {!showQR && (
