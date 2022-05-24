@@ -37,8 +37,8 @@ export default function SignUp() {
         <>
             <div className="min-h-full flex flex-col justify-center items-center bg-dark h-screen text-white px-2 py-3">
                 <div className="w-full flex flex-col items-center justify-center h-full border-[1px] border-whiteBorder rounded-[25px] m-2">
-                    <h1 className={"my-4 text-xl"}>Sign-up</h1>
-                    <div className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <h1 className={"my-4 text-lg"}>Sign-up</h1>
+                    <div className="py-8 px-4 sm:rounded-lg sm:px-10">
                             <div>
                                 <label htmlFor="email" className="hidden">
                                     Email address
@@ -114,14 +114,15 @@ export default function SignUp() {
                         <button className={"mb-8"} onClick={() => router.push('/login')}>
                             <span className={"text-sm ml-1 text-gray-400"}>Are you already registered?</span>
                         </button>
-                            <div>
-                                <button
-                                    onClick={handleLogin}
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
-                                    Sign in
-                                </button>
-                            </div>
+
+                    </div>
+                    <div>
+                        <button
+                            onClick={handleLogin}
+                            className={"text-md underline transform -translate-y-6"}
+                        >
+                            Submit
+                        </button>
                     </div>
                 </div>
             </div>
