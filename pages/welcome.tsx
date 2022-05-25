@@ -12,13 +12,7 @@ const Welcome: NextPage = () => {
     const [showSubTitle, setShowSubTitle] = useState<boolean>(false)
     const [showMessage, setShowMessage] = useState<boolean>(false)
     const [showQR, setShowQR] = useState<boolean>(false)
-    const intersectionRef = useRef(null);
     const text = "I think you are an interesting person, let's get to know each other if it's ok with you"
-    const intersection = useIntersection(intersectionRef, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-    });
 
     setTimeout(() => {
         setShowTitle(true)
@@ -30,19 +24,12 @@ const Welcome: NextPage = () => {
         setShowMessage(true)
     }, 2500)
 
-    useEffect(() => {
-        if(intersection?.isIntersecting){
-            setShowQR(true)
-        }
-    }, [intersection])
-
-    console.log("inter")
-    console.log(intersection?.isIntersecting)
-    console.log("showQR")
-    console.log(showQR)
+    setTimeout(() => {
+        setShowQR(true)
+    }, 7000)
 
     return (
-        <div className={"bg-dark"}>
+        <>
             {!showQR && (
                 <>
                     <div
@@ -64,24 +51,21 @@ const Welcome: NextPage = () => {
                                     as="span"
                                     enter={classNames("transition-all ease-in-out duration-[2000ms]")}
                                     enterFrom="opacity-0 transform translate-y-16"
-                                    enterTo="opacity-100 transform translate-y-2"
+                                    enterTo="opacity-100 transform translate-y-0"
                                 >
-                                    <span className={"text-2xl text-gray-400 mt-4"}>Nice to meet you ;)</span>
+                                    <span className={"text-2xl text-gray-400"}>Nice to meet you ;)</span>
                                 </Transition>
                                 <Transition
                                     show={showMessage}
                                     as="span"
                                     enter={classNames("transition-all ease-in-out duration-[2000ms]")}
                                     enterFrom="opacity-0 transform translate-y-20"
-                                    enterTo="opacity-100 transform translate-y-4"
+                                    enterTo="opacity-100 transform translate-y-2"
                                 >
-                                    <span className={"text-2xl text-gray-400 mt-5 leading-[1.375rem]"}>{text}</span>
+                                    <span className={"text-2xl text-gray-400 leading-[1.375rem]"}>{text}</span>
                                 </Transition>
                             </div>
                         </div>
-
-                    </div>
-                    <div className={"w-24 h-[20rem] bg-dark"} ref={intersectionRef}>
                     </div>
                 </>
             )}
@@ -111,7 +95,7 @@ const Welcome: NextPage = () => {
                         </div>
                     </Transition>
                 </div>
-        </div>
+        </>
 
     )
 }
