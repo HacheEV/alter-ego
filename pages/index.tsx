@@ -1,26 +1,35 @@
 import type {NextPage} from 'next'
 import {supabase} from "../utils/supabase-client";
 import {useRouter} from "next/router";
-import {useEffect, useMemo, useState} from "react";
-import { Disclosure} from '@headlessui/react'
+import {useEffect, useState} from "react";
+import AlterAvatar from '../public/alter-avatar.png'
+import RightArrow from '../public/right-arrow.png'
 import {classNames} from "../utils/classnames";
 import Image from "next/image";
 import moment from "moment";
-import { makeId } from '../utils/utils'
-import NotAllowed from "../components/not-allowed";
+import {makeId} from '../utils/utils'
+import Navbar from "../components/navbar";
+import AvatarSpinner from "../components/avatar-spinner";
+import CloseIcon from "../public/close.png";
 
 interface Profile {
     id: string;
     username: string;
     role: number;
 }
-interface Conversation{
+
+interface Conversation {
     id: string | undefined;
     user_id: string;
     app_selfie: string;
     user_selfie?: string;
     created_at: Date;
     position: number;
+}
+
+interface Chat {
+    src: string | any;
+    side: string;
 }
 
 const Home: NextPage = () => {
@@ -33,6 +42,26 @@ const Home: NextPage = () => {
     const [endGame, setEndGame] = useState<boolean>(false)
     const [conversation, setConversation] = useState<Conversation[] | any>([])
     const [conversationId, setConversationId] = useState<string>("")
+    const [imageReady, setImageReady] = useState<boolean>(false)
+    const [chat, setChat] = useState<Chat[]>([])
+    const [seeImageChat, setSeeImageChat] = useState<boolean>(false)
+    const [selectedImage, setSelectedImage] = useState<string>("")
+
+    const chatito = [
+        {src: imageUrl, side: "left"},
+        {src: imageUrl, side: "right"},
+        {src: imageUrl, side: "left"},
+        {src: imageUrl, side: "right"},
+        {src: imageUrl, side: "left"},
+        {src: imageUrl, side: "right"},
+        {src: imageUrl, side: "left"},
+        {src: imageUrl, side: "right"},
+        {src: imageUrl, side: "left"},
+        {src: imageUrl, side: "right"},
+    ]
+
+    const text = "Sorry, I just don’t have the energy to have \n" +
+        "a fake live on social media right now ... "
 
     useEffect(() => {
         setConversationId(makeId(12))
@@ -53,24 +82,27 @@ const Home: NextPage = () => {
 
     useEffect(() => {
         getImageRandom()
-    },[user])
+    }, [user])
 
+    const getImageRandom = async () => {
+        const {publicURL, error} = supabase
+            .storage
+            .from('bucket')
+            .getPublicUrl(`app_selfies/${randomImage}.jpg`)
+        if (publicURL !== null) {
+            setImageUrl(publicURL);
+            setImageReady(true)
+            const alterAnswer = {src: publicURL, side: "left"}
+            setChat([...chat, alterAnswer])
+        }
+    }
     useEffect(() => {
-        if(conversation.length === 2){
+        if (conversation.length === 2) {
             saveConversation()
             setEndGame(true)
         }
     }, [conversation])
 
-    const getImageRandom = async () => {
-        const { publicURL, error } = supabase
-            .storage
-            .from('bucket')
-            .getPublicUrl(`app_selfies/${randomImage}.jpg`  )
-        if(publicURL !== null){
-            setImageUrl(publicURL);
-        }
-    }
 
     const getProfile = async () => {
         try {
@@ -84,16 +116,10 @@ const Home: NextPage = () => {
         }
     }
 
-
-    const handleLogout = async () => {
-        const {error} = await supabase.auth.signOut()
-        if (error) console.log(error)
-        router.push('/login')
-    }
     const navigation = [
-        { name: 'Conversations', href: '/conversations', current: true }
+        {name: 'Conversations', href: '/conversations', current: true}
     ]
-    const handleUploadImage = async (e:any) => {
+    const handleUploadImage = async (e: any) => {
         if (!e.target.files || e.target.files.length === 0) {
             throw new Error('You must select an image to upload.')
         }
@@ -103,13 +129,12 @@ const Home: NextPage = () => {
             user_id: user?.id,
             email: user?.email
         }
-        // TODO: DO DE PAGE BY CONVERSATION ID LIKE IG CHAT
-        if(conversation.length === 0){
-            const { data, error } = await supabase
+        if (conversation.length === 0) {
+            const {data, error} = await supabase
                 .from('conversations')
                 .insert([conversationObject])
-            if(data)console.log(data)
-            if(error){
+            if (data) console.log(data)
+            if (error) {
                 console.log(error)
             }
         }
@@ -117,21 +142,21 @@ const Home: NextPage = () => {
 
     const uploadImage = async (e: any) => {
         try {
-            if(imageUploaded){
+            if (imageUploaded) {
                 const fileName = `${profile?.username}_${moment().format()}`
 
-                let { data, error: uploadError } = await supabase.storage
+                let {data, error: uploadError} = await supabase.storage
                     .from('bucket')
                     .upload(fileName, imageUploaded)
                 if (uploadError) {
                     throw uploadError
                 }
-                if(data){
-                    const { publicURL, error } = supabase
+                if (data) {
+                    const {publicURL, error} = supabase
                         .storage
                         .from('bucket')
                         .getPublicUrl(fileName)
-                    if(publicURL) {
+                    if (publicURL) {
                         setUserImage(publicURL)
                         const firstConversation = {
                             id: conversationId,
@@ -139,103 +164,109 @@ const Home: NextPage = () => {
                             user_selfie: publicURL,
                             created_at: moment().format()
                         }
-                        setConversation((array:any) => {
+                        setConversation((array: any) => {
                             return [...conversation, firstConversation]
                         })
                     }
                 }
             }
-        } catch (error:any) {
+        } catch (error: any) {
             alert(error.message)
         }
     }
 
     const saveConversation = async () => {
-        const { data, error } = await supabase
+        const {data, error} = await supabase
             .from('conversation_detail')
             .upsert(conversation)
-        if(data) console.log(data);
-        if(error) console.log(error);
+        if (data) console.log(data);
+        if (error) console.log(error);
     }
     const handleNewImage = () => {
         getImageRandom()
     }
+    const handleExpandImage = (src:any) => {
+        setSelectedImage(src);
+        setSeeImageChat(true)
+    }
+    const handleCloseImage = () => {
+        setSelectedImage("")
+        setSeeImageChat(false)
+    }
 
     return (
         <>
-            {user ? (
-                <>
-                    <div className="min-h-full">
-                        <Disclosure as="nav" className="bg-indigo-600">
-                            {({open}) => (
-                                <>
-                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                        <div className="flex items-center justify-between h-16">
-                                            <div className="flex items-center">
-                                                <div className="hidden md:block">
-                                                    <div className="ml-10 flex items-baseline space-x-4">
-                                                        {navigation.map((item) => (
-                                                            <a
-                                                                key={item.name}
-                                                                href={item.href}
-                                                                className={classNames(
-                                                                    item.current
-                                                                        ? 'bg-indigo-700 text-white'
-                                                                        : 'text-white hover:bg-indigo-500 hover:bg-opacity-75',
-                                                                    'px-3 py-2 rounded-md text-sm font-medium'
-                                                                )}
-                                                                aria-current={item.current ? 'page' : undefined}
-                                                            >
-                                                                {item.name}
-                                                            </a>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="hidden md:block">
-                                                <div className="ml-4 flex items-center md:ml-6">
-                                                    <button
-                                                        onClick={handleLogout}
-                                                        type="button"
-                                                        className="bg-indigo-600 p-1 rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white"
-                                                    >
-                                                        Log out
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </Disclosure>
-                        <main className={"flex items-center justify-center"}>
-                            <div className="relative w-1/3 h-[40rem] mx-auto my-20  rounded-md py-6 border-2 sm:px-6 lg:px-8">
-                                {endGame && <span>END GAME</span>}
-                                <button className={"w-10 h-10 rounded-full bg-blue-700 z-50 absolute top-2 left-2"} onClick={handleNewImage}></button>
-                                    {imageUrl && (
-                                        <div className={"flex flex-col mt-4"}>
-                                            <Image src={imageUrl} layout={"fill"} className={"rounded-md"}/>
-                                            <span>Answer me with the same selfie</span>
-                                        </div>
-                                    )}
-                                {/*IMAGES FROM THE USER*/}
-                                <div className={"flex flex-col absolute top-44 left-4"} >
-                                    {/*@ts-ignore*/}
-                                    <input type="file" id="mypic" accept="image/*" capture="camera" onChange={handleUploadImage} />
-                                    <button onClick={uploadImage} className={"border-2 border-red-500"}>Upload</button>
-                                    {userImage && (
-                                        <div className={"flex flex-col mt-4"}>
-                                            <Image src={userImage} width={200} height={200} />
-                                        </div>
-                                    )}
-                                </div>
+            {!seeImageChat &&
+                <div className={"w-full h-full bg-dark flex flex-col items-center font-Inter"}>
+                    <Navbar isAdmin={profile?.role === 1}/>
+                    <div className={"w-full flex flex-col items-center mt-24"}>
+                        {imageReady ? (
+                            <div className={"w-44 h-44 border-4 border-whiteBorder rounded-full p-2"}>
+                                <Image src={AlterAvatar} layout={"responsive"}/>
                             </div>
-                        </main>
+                        ) : (
+                            <AvatarSpinner/>
+                        )}
+                        <span className={"text-white text-xl mt-8"}>@sofiatarragona</span>
+                        <p className={"text-white w-[34ch] mt-4"}>{text}</p>
                     </div>
-                </>
-            ) : <NotAllowed />}
-
+                    <div className={classNames("w-full px-6 mt-10 flex flex-col")}>
+                        {chat.length > 0 && (
+                            chat.map((item, index) => {
+                                return (
+                                    <div key={index} className={classNames("w-full flex items-center my-3 ",
+                                        item.side === "left" ? "justify-start" : "flex-row-reverse")}>
+                                        <div
+                                            className={"w-12 h-12 rounded-full border-whiteBorder border-2 my-2 flex items-center justify-center"}>
+                                            {imageUrl &&
+                                                <Image src={imageUrl} width={40} height={40} layout={"fixed"}
+                                                       className={classNames("rounded-full")}/>
+                                            }
+                                        </div>
+                                        <button
+                                            className={classNames("w-32 border-2 border-whiteBorder rounded-full h-12 flex items-center justify-center p-2 text-white",
+                                                item.side === "left" ? "ml-4" : "mr-4"
+                                            )}
+                                            onClick={() => handleExpandImage(imageUrl)}
+                                        >
+                                            <span className={" text-sm mr-3 mt-1 "}>See picture</span>
+                                            <Image src={RightArrow} width={13} height={13}/>
+                                        </button>
+                                    </div>
+                                )
+                            })
+                        )}
+                    </div>
+                    {endGame &&
+                        <div
+                            className={"w-full bg-dark h-24 font-Inter text-white text-2xl flex items-center justify-center"}>
+                            <span>Thanks for talk!</span>
+                        </div>
+                    }
+                </div>
+            }
+            {seeImageChat && (
+                <div className={"w-full relative h-screen"}>
+                    <div className={"w-full h-full absolute top-0 left-0 z-20"}>
+                        <Image src={selectedImage} layout={"responsive"} width={250} height={600} />
+                    </div>
+                    <div className={"absolute top-6 right-6 z-30"}>
+                        <button
+                            onClick={handleCloseImage}
+                            type="button"
+                            className="text-white"
+                        >
+                            <Image src={CloseIcon} width={20} height={20} alt={"Conversation icon"}/>
+                        </button>
+                    </div>
+                    <div className={"absolute bottom-20 left-12 z-30 h-10 border-black border-2"}>
+                        {/*@ts-ignore*/}
+                        <input type="file" id="mypic" accept="image/*" capture="camera" onChange={handleUploadImage} />
+                    </div>
+                </div>
+            )}
         </>
+
     )
 }
 

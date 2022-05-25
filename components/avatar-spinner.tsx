@@ -1,12 +1,17 @@
+import Image from "next/image";
+import AlterAvatar from "../public/alter-avatar.png";
+
 const AvatarSpinner = () => {
     return (
-        <div className={"w-20 h-20 rounded-full relative"}>
-            <div className={"w-[4.25rem] h-[4.25rem] bg-green-300 rounded-full absolute top-2 left-2"}></div>
+        <div className={"w-44 h-44 rounded-full relative"}>
+            <div className={"w-40 h-40 p-2 absolute top-2 left-2"}>
+                <Image src={AlterAvatar} layout={"responsive"} />
+            </div>
             <svg
-                className={"w-[5.4rem] h-[5.4rem] absolute top-0 -left-[0.5px]"}
+                className={"w-full h-full absolute top-0 -left-[0.5px]"}
                 viewBox="0 0 200 200"
                 // TODO: CHANGE HERE THE COLOR OF THE SPINNER
-                color="#EA4444"
+                color="#E8B7DA"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
             >
