@@ -11,7 +11,6 @@ import {makeId} from '../utils/utils'
 import Navbar from "../components/navbar";
 import AvatarSpinner from "../components/avatar-spinner";
 import CloseIcon from "../public/close.png";
-import Conversations from "./conversations";
 
 interface Profile {
     id: string;
@@ -188,6 +187,9 @@ const Home: NextPage = () => {
         setSelectedImage("")
         setSeeImageChat(false)
     }
+    const myLoader = () => {
+        return "/refresh.png"
+    }
 
     return (
         <>
@@ -213,9 +215,9 @@ const Home: NextPage = () => {
                                         item.side === "left" ? "justify-start" : "flex-row-reverse")}>
                                         <div
                                             className={"w-12 h-12 rounded-full border-whiteBorder border-2 my-2 flex items-center justify-center p-1"}>
-                                            <div className={"relative w-10 h-10 rounded-full"}>
+                                            <div className={"relative w-10 h-10 rounded-full overflow-hidden"}>
                                                 <Image src={item.src} layout={"fill"}
-                                                       className={classNames("rounded-full object-cover")}/>
+                                                       className={classNames("w-9 h-9 rounded-full object-cover")} priority placeholder={"blur"} blurDataURL={"/alter-avatar.png"}/>
                                             </div>
                                         </div>
                                         <button
