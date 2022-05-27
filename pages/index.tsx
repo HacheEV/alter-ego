@@ -91,18 +91,18 @@ const Home: NextPage = () => {
     }
     useEffect(() => {
         const isModule = chat.length % 2;
-        if (isModule === 0 && chat.length === 2 && !endGame) {
-            if (conversation?.length === 0) {
-                const conversationObject = {
-                    id: conversationId,
-                    user_id: user?.id,
-                    email: user?.email,
-                    created_at: moment().format()
-                }
-                saveConversation(conversationObject);
-                setConversation([conversationObject])
-            }
-        }
+        // if (isModule === 0 && chat.length === 2 && !endGame) {
+        //     if (conversation?.length === 0) {
+        //         const conversationObject = {
+        //             id: conversationId,
+        //             user_id: user?.id,
+        //             email: user?.email,
+        //             created_at: moment().format()
+        //         }
+        //         saveConversation(conversationObject);
+        //         setConversation([conversationObject])
+        //     }
+        // }
         if(userHasAnswered && chat.length < 8){
             getImageRandom()
             setUserHasAnswered(false)
@@ -264,14 +264,14 @@ const Home: NextPage = () => {
                     ) : (!endGame &&
                         <>
                             <div className={"flex items-center w-full justify-start z-30 h-32 mb-16"}>
-                                <div className={"w-14 h-16 relative ml-8"}>
-                                    <Image src={Upload} width={30} height={30} className={"absolute top-0 left-2 z-30"}/>
+                                <div className={"w-14 h-16 relative ml-8 mt-5"}>
+                                    <Image src={Upload} width={25} height={25} className={"absolute top-4 left-2 z-30"}/>
                                     {/*@ts-ignore*/}
-                                    <input type="file" accept="image/*" capture="filesystem"
+                                    <input type="file" accept="image/*"
                                            onChange={handleUploadImage} className={"w-full h-full absolute top-0 left-0 z-50 opacity-0"} />
                                 </div>
 
-                                <div className={"flex flex-col items-center ml-24"}>
+                                <div className={"flex flex-col items-center ml-20"}>
                                     <div
                                         className={"z-30 w-20 h-20 border-2 border-whiteBorder rounded-full flex items-center justify-center"}>
                                         <div
