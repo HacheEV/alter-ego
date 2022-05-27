@@ -11,6 +11,7 @@ import {makeId} from '../utils/utils'
 import Navbar from "../components/navbar";
 import AvatarSpinner from "../components/avatar-spinner";
 import CloseIcon from "../public/close.png";
+import Upload from "../public/upload.png";
 
 interface Profile {
     id: string;
@@ -261,22 +262,34 @@ const Home: NextPage = () => {
                             <AvatarSpinner isLoader={true}/>
                         </div>
                     ) : (!endGame &&
-                        <div className={"flex flex-col items-center z-30 h-32 mb-16"}>
-                            <div
-                                className={"z-30 w-20 h-20 border-2 border-whiteBorder rounded-full flex items-center justify-center"}>
-                                <div
-                                    className={"w-14 h-14 rounded-full border-2 border-whiteBorder flex items-center justify-center my-1"}>
-                                    <div
-                                        className={"w-10 h-10 rounded-full bg-white flex items-center justify-center mb-[0.5px]"}>
-                                        {/*@ts-ignore*/}
-                                        <input type="file" id="mypic" accept="image/*" capture="camera"
-                                               onChange={handleUploadImage} className={"w-full opacity-0"}/>
-                                    </div>
+                        <>
+                            <div className={"flex items-center w-full justify-start z-30 h-32 mb-16"}>
+                                <div className={"w-14 h-16 relative ml-8"}>
+                                    <Image src={Upload} width={30} height={30} className={"absolute top-0 left-2 z-30"}/>
+                                    {/*@ts-ignore*/}
+                                    <input type="file" accept="image/*" capture="filesystem"
+                                           onChange={handleUploadImage} className={"w-full h-full absolute top-0 left-0 z-50 opacity-0"} />
                                 </div>
 
+                                <div className={"flex flex-col items-center ml-24"}>
+                                    <div
+                                        className={"z-30 w-20 h-20 border-2 border-whiteBorder rounded-full flex items-center justify-center"}>
+                                        <div
+                                            className={"w-14 h-14 rounded-full border-2 border-whiteBorder flex items-center justify-center my-1"}>
+                                            <div
+                                                className={"w-10 h-10 rounded-full bg-white flex items-center justify-center mb-[0.5px]"}>
+                                                {/*@ts-ignore*/}
+                                                <input type="file" id="mypic" accept="image/*" capture="camera"
+                                                       onChange={handleUploadImage} className={"w-full opacity-0"}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span className={"z-30 text-black mt-2 text-whiteBorder"}>Send image</span>
+                                </div>
                             </div>
-                            <span className={"z-30 text-black mt-2 text-whiteBorder"}>Send image</span>
-                        </div>
+
+                        </>
+
                     )}
 
                 </div>
