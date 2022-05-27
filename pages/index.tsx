@@ -263,7 +263,7 @@ const Home: NextPage = () => {
                     ) : (!endGame &&
                         <>
                             <div className={"flex items-center w-full justify-start z-30 h-32 mb-16"}>
-                                <div className={"w-14 h-16 relative ml-8 mt-5"}>
+                                <div className={"w-14 h-16 relative ml-4 mt-5"}>
                                     <Image src={Upload} width={25} height={25} className={"absolute top-4 left-2 z-30"}/>
                                     {/*@ts-ignore*/}
                                     <input type="file" accept="image/*"
