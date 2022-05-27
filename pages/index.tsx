@@ -246,13 +246,12 @@ const Home: NextPage = () => {
             {seeImageChat && (
                 <div className={"w-full relative h-screen flex flex-col items-center justify-end"}>
                     <div className={"w-full h-full absolute top-0 left-0 z-20"}>
-                        <Image src={selectedImage} layout={"responsive"} width={250} height={600}/>
+                        <Image src={selectedImage} layout={"fill"} className={"object-fill"}/>
                     </div>
                     <div className={"absolute top-6 right-6 z-30"}>
                         <button
                             onClick={handleCloseImage}
                             type="button"
-                            className="text-white"
                         >
                             <Image src={CloseIcon} width={20} height={20} alt={"Conversation icon"}/>
                         </button>
