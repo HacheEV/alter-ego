@@ -67,7 +67,6 @@ const Conversations: NextPage = () => {
         if(error) console.log(error)
         if(data) setTotalInteractions(data.length)
     }
-    // TODO TOTAL INTERACTIONS
     useEffect(() => {
         getConversations()
         getConversationDetails()

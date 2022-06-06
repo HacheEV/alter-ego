@@ -113,7 +113,8 @@ const Home: NextPage = () => {
                     conversation_id: conversationId,
                     created_at: chat.created_at,
                     order: index + 1,
-                    selfie_url: chat.src
+                    selfie_url: chat.src,
+                    side: chat.side
                 }
             })
             saveChat(newChat)
@@ -188,6 +189,7 @@ const Home: NextPage = () => {
         setSelectedImage("")
         setSeeImageChat(false)
     }
+    console.log(chat)
 
     return (
         <>
