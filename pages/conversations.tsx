@@ -57,7 +57,9 @@ const Conversations: NextPage = () => {
         const {data, error} = await supabase.from('conversations')
             .select(`id, email, created_at, profiles(username, color), conversation_detail(selfie_url)`)
         if(error) console.log(error)
-        if (data) setConversations(data)
+        if (data) {
+            setConversations(data)
+        }
     }
     const getConversationDetails = async () => {
         const {data, error} = await supabase.from('conversation_detail')
@@ -73,7 +75,7 @@ const Conversations: NextPage = () => {
 
     return (
         <>
-            {user ? (
+            {(user && conversations.length > 0) ? (
                 <div className={"flex flex-col items-center justify-start"}>
                     <div className={"w-full h-[10%] flex items-center justify-between px-4 pt-6"}>
                         <button
@@ -101,47 +103,47 @@ const Conversations: NextPage = () => {
                         <span className={"text-white font-Inter text-xl font-medium"}>{conversations.length}</span>
                         <span className={"text-white font-Inter text-xs font-light"}>Conversations</span>
                     </div>
-                    <div className={"flex items-start justify-start h-full"}>
-                        <div className="w-full px-2  rounded-md py-6 sm:px-6 lg:px-8">
-                            <ul role="list" className="font-Inter grid grid-cols-2 gap-6 sm:grid-cols-2">
-                                {conversations.map((conversation: any, index: number) => {
-                                    const border = `border-[${conversation.profiles.color}]`
-                                    return (
-                                        <li key={index}
-                                            className="col-span-1 bg-dark w-44">
-                                            <div className="w-full flex flex-col items-center py-6 px-3">
-                                                <div
-                                                    className={classNames("w-16 h-16 rounded-full border-2 my-2 flex items-center justify-center", border ? border : "border-whiteBorder"
-                                                    )}>
+                        <div className={"flex items-start justify-start h-full"}>
+                            <div className="w-full px-2  rounded-md py-6 sm:px-6 lg:px-8">
+                                <ul role="list" className="font-Inter grid grid-cols-2 gap-6 sm:grid-cols-2">
+                                    {conversations.map((conversation: any, index: number) => {
+                                        const border = `border-[${conversation.profiles.color}]`
+                                        return (
+                                            <li key={index}
+                                                className="col-span-1 bg-dark w-44">
+                                                <div className="w-full flex flex-col items-center py-6 px-3">
                                                     <div
-                                                        className={"relative w-[3.3rem] h-[3.3rem] rounded-full overflow-hidden"}>
-                                                        <Image src={conversation.conversation_detail[1].selfie_url}
-                                                               layout={"fill"}
-                                                               className={classNames("w-9 h-9 rounded-full object-cover")}
-                                                               priority placeholder={"blur"}
-                                                               blurDataURL={"/alter-avatar.png"}/>
+                                                        className={classNames("w-16 h-16 rounded-full border-2 my-2 flex items-center justify-center", border ? border : "border-whiteBorder"
+                                                        )}>
+                                                        <div
+                                                            className={"relative w-[3.3rem] h-[3.3rem] rounded-full overflow-hidden"}>
+                                                            <Image src={conversation.conversation_detail[1] ? conversation.conversation_detail[1].selfie_url : "/alter-avatar.png"}
+                                                                   layout={"fill"}
+                                                                   className={classNames("w-9 h-9 rounded-full object-cover")}
+                                                                   priority placeholder={"blur"}
+                                                                   blurDataURL={"/alter-avatar.png"}/>
+                                                        </div>
                                                     </div>
+                                                    <span
+                                                        className={"text-white text-sm"}>@{conversation.profiles.username}</span>
+                                                    <span
+                                                        className={"text-white text-xs text-gray-400 mt-2"}>{moment(conversation.created_at).format('LL')}</span>
+                                                    <span
+                                                        className={"text-white text-xs text-gray-400"}>{conversation.conversation_detail.length} interactions</span>
+                                                    <Link href={`/conversation/${conversation.id}`}>
+                                                        <a className={"w-full flex items-center justify-center text-white mt-2"}>
+                                                            <span className={"underline text-select2 text-sm mr-1"}>View interactions</span>
+                                                            <Image src={RightArrow} width={0} height={10}/>
+                                                        </a>
+                                                    </Link>
                                                 </div>
-                                                <span
-                                                    className={"text-white text-sm"}>@{conversation.profiles.username}</span>
-                                                <span
-                                                    className={"text-white text-xs text-gray-400 mt-2"}>{moment(conversation.created_at).format('LL')}</span>
-                                                <span
-                                                    className={"text-white text-xs text-gray-400"}>{conversation.conversation_detail.length} interactions</span>
-                                                <Link href={`/conversation/${conversation.id}`}>
-                                                    <a className={"w-full flex items-center justify-center text-white mt-2"}>
-                                                        <span className={"underline text-select2 text-sm mr-1"}>View interactions</span>
-                                                        <Image src={RightArrow} width={0} height={10}/>
-                                                    </a>
-                                                </Link>
-                                            </div>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
 
+                            </div>
                         </div>
-                    </div>
                 </div>
             ) : <NotAllowed />}
 
