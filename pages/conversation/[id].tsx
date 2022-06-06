@@ -3,15 +3,11 @@ import {useRouter} from "next/router";
 import {supabase} from "../../utils/supabase-client";
 import {useEffect, useState} from "react";
 import Image from "next/image";
-import NotAllowed from "../../components/not-allowed";
 import Navbar from "../../components/navbar";
 import AlterAvatar from "../../public/alter-avatar.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import GridIcon from "../../public/grid-icon.png"
 import ChatIcon from "../../public/chat-icon.png"
 import {classNames} from "../../utils/classnames";
-import AvatarSpinner from "../../components/avatar-spinner";
 import moment from "moment";
 
 interface UserChat{
@@ -26,10 +22,15 @@ interface ConversationDetail{
     conversation_id: string;
     side: string;
 }
+interface ConversationUser{
+    user_id: string;
+    created_at: string;
+    profiles: UserChat;
+}
 
 interface Props{
     conversationDetail: ConversationDetail[];
-    conversationAndUser: UserChat;
+    conversationAndUser: ConversationUser;
     userBorder: string;
 }
 
@@ -39,9 +40,6 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<any>()
     const [grid, setGrid] = useState<boolean>(false)
-
-    console.log("conversationDetail")
-    console.log(conversationDetail)
 
     useEffect(() => {
         if (!user) {
