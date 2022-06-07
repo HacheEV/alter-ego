@@ -26,23 +26,23 @@ const Welcome: NextPage = () => {
 
     setTimeout(() => {
         setShowQR(true)
-    }, 7000)
+    }, 7500)
 
     return (
         <>
             {!showQR && (
                 <>
                     <div
-                        className="flex flex-col justify-center items-center bg-dark h-screen text-white px-2 py-3 font-Inter">
+                        className="flex flex-col justify-center items-center bg-dark h-full text-white px-2 pt-72 font-Inter">
                         <div
                             className="w-full flex flex-col items-center justify-center rounded-[25px] m-2">
-                            <div className={"w-full h-[90%] font-Inter flex flex-col pl-8 pr-10 "}>
+                            <div className={"w-full font-Inter flex flex-col px-10 "}>
                                 <Transition
                                     show={showTitle}
                                     as="span"
                                     enter={classNames("transition-all ease-in-out duration-[2000ms]")}
                                     enterFrom="opacity-0 transform translate-y-16"
-                                    enterTo="opacity-100 transform translate-y-0"
+                                    enterTo="opacity-100 transform translate-y-2"
                                 >
                                     <span className={"text-6xl font-extrabold"}>Hey there!</span>
                                 </Transition>
@@ -51,7 +51,7 @@ const Welcome: NextPage = () => {
                                     as="span"
                                     enter={classNames("transition-all ease-in-out duration-[2000ms]")}
                                     enterFrom="opacity-0 transform translate-y-16"
-                                    enterTo="opacity-100 transform translate-y-0"
+                                    enterTo="opacity-100 transform translate-y-2"
                                 >
                                     <span className={"text-2xl text-gray-400"}>Nice to meet you ;)</span>
                                 </Transition>
@@ -60,7 +60,7 @@ const Welcome: NextPage = () => {
                                     as="span"
                                     enter={classNames("transition-all ease-in-out duration-[2000ms]")}
                                     enterFrom="opacity-0 transform translate-y-20"
-                                    enterTo="opacity-100 transform translate-y-2"
+                                    enterTo="opacity-100 transform translate-y-4"
                                 >
                                     <span className={"text-2xl text-gray-400 leading-[1.375rem]"}>{text}</span>
                                 </Transition>
