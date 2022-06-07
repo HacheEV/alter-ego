@@ -90,24 +90,25 @@ const Home: NextPage = () => {
         }
     }
     useEffect(() => {
-        const isModule = chat.length % 2;
-        if (isModule === 0 && chat.length === 2 && !endGame) {
-            if (conversation?.length === 0) {
-                const conversationObject = {
-                    id: conversationId,
-                    user_id: user?.id,
-                    email: user?.email,
-                    created_at: moment().format()
-                }
-                saveConversation(conversationObject);
-                setConversation([conversationObject])
-            }
-        }
-        if(userHasAnswered && chat.length < 8){
+        // const isModule = chat.length % 2;
+        // if (isModule === 0 && chat.length === 2 && !endGame) {
+        //     if (conversation?.length === 0) {
+        //         const conversationObject = {
+        //             id: conversationId,
+        //             user_id: user?.id,
+        //             email: user?.email,
+        //             created_at: moment().format()
+        //         }
+        //         saveConversation(conversationObject);
+        //         setConversation([conversationObject])
+        //     }
+        // }
+        if (userHasAnswered && chat.length < 8) {
             getImageRandom()
             setUserHasAnswered(false)
         }
         if (chat.length === 8 && !endGame) {
+            verifyIfConversationExist()
             const newChat = chat.map((chat, index) => {
                 return {
                     conversation_id: conversationId,
@@ -189,7 +190,33 @@ const Home: NextPage = () => {
         setSelectedImage("")
         setSeeImageChat(false)
     }
-    console.log(chat)
+
+    const handleFinishChat = () => {
+       verifyIfConversationExist()
+        const newChat = chat.map((chat, index) => {
+            return {
+                conversation_id: conversationId,
+                created_at: chat.created_at,
+                order: index + 1,
+                selfie_url: chat.src,
+                side: chat.side
+            }
+        })
+        saveChat(newChat)
+        setEndGame(true)
+    }
+    const verifyIfConversationExist = () => {
+        if (conversation?.length === 0) {
+            const conversationObject = {
+                id: conversationId,
+                user_id: user?.id,
+                email: user?.email,
+                created_at: moment().format()
+            }
+            saveConversation(conversationObject);
+            setConversation([conversationObject])
+        }
+    }
 
     return (
         <>
@@ -217,7 +244,8 @@ const Home: NextPage = () => {
                                             className={"w-12 h-12 rounded-full border-whiteBorder border-2 my-2 flex items-center justify-center p-1"}>
                                             <div className={"relative w-10 h-10 rounded-full overflow-hidden"}>
                                                 <Image src={item.src} layout={"fill"}
-                                                       className={classNames("w-9 h-9 rounded-full object-cover")} priority placeholder={"blur"} blurDataURL={"/alter-avatar.png"}/>
+                                                       className={classNames("w-9 h-9 rounded-full object-cover")}
+                                                       priority placeholder={"blur"} blurDataURL={"/alter-avatar.png"}/>
                                             </div>
                                         </div>
                                         <button
@@ -234,6 +262,15 @@ const Home: NextPage = () => {
                             })
                         )}
                     </div>
+                    {(chat.length > 1 && !endGame) && (
+                        <button
+                            className={classNames("w-32 border-2 border-whiteBorder rounded-full h-12 flex items-center justify-center text-white")}
+                            onClick={() => handleFinishChat()}
+                        >
+                            <span className={" text-md font-semibold mt-1 "}>Finish chat</span>
+                        </button>
+                    )
+                    }
                     {endGame &&
                         <div
                             className={"w-full bg-dark h-24 font-Inter text-white text-2xl flex items-center justify-center"}>
@@ -263,10 +300,12 @@ const Home: NextPage = () => {
                         <>
                             <div className={"flex items-center w-full justify-start z-30 h-32 mb-16"}>
                                 <div className={"w-14 h-16 relative ml-4 mt-5"}>
-                                    <Image src={Upload} width={25} height={25} className={"absolute top-4 left-2 z-30"}/>
+                                    <Image src={Upload} width={25} height={25}
+                                           className={"absolute top-4 left-2 z-30"}/>
                                     {/*@ts-ignore*/}
                                     <input type="file" accept="image/*"
-                                           onChange={handleUploadImage} className={"w-full h-full absolute top-0 left-0 z-50 opacity-0"} />
+                                           onChange={handleUploadImage}
+                                           className={"w-full h-full absolute top-0 left-0 z-50 opacity-0"}/>
                                 </div>
 
                                 <div className={"flex flex-col items-center ml-20"}>
@@ -285,11 +324,8 @@ const Home: NextPage = () => {
                                     <span className={"z-30 text-black mt-2 text-whiteBorder"}>Send image</span>
                                 </div>
                             </div>
-
                         </>
-
                     )}
-
                 </div>
             )}
         </>
