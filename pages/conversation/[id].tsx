@@ -120,12 +120,12 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                 {conversationDetail.map((conversation, index) => {
                                     return (
                                         <div key={index} className={classNames("flex col-span-1 w-full my-5", conversation.side === "left" ? "justify-start" : "flex-row-reverse")}>
-                                            <div className={classNames("flex items-end", conversation.side === "left" ? "justify-start ml-2" : "justify-end mr-2",
-                                            conversation.side === "right" && "flex-row-reverse")}>
+                                            <div className={classNames("flex items-end", conversation.side === "left" ? "justify-start ml-2" : "justify-end mr-2"
+                                            )}>
                                                 <div className={classNames("w-20 h-40  rounded-xl ", conversation.side === "left" ? "" : "")}>
                                                     <Image src={conversation.selfie_url} width={220} height={450} layout={"responsive"} className={"rounded-xl"}/>
                                                 </div>
-                                                <span className={classNames("text-xs font-bold", conversation.side === "left" ? "ml-1" : "mr-1")}>{moment(conversation.created_at).format('HH:mm')}</span>
+                                                <span className={classNames("text-xs font-bold ml-1")}>{moment(conversation.created_at).format('HH:mm')}</span>
                                             </div>
                                         </div>
                                     )
