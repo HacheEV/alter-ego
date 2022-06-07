@@ -90,19 +90,6 @@ const Home: NextPage = () => {
         }
     }
     useEffect(() => {
-        // const isModule = chat.length % 2;
-        // if (isModule === 0 && chat.length === 2 && !endGame) {
-        //     if (conversation?.length === 0) {
-        //         const conversationObject = {
-        //             id: conversationId,
-        //             user_id: user?.id,
-        //             email: user?.email,
-        //             created_at: moment().format()
-        //         }
-        //         saveConversation(conversationObject);
-        //         setConversation([conversationObject])
-        //     }
-        // }
         if (userHasAnswered && chat.length < 8) {
             getImageRandom()
             setUserHasAnswered(false)
