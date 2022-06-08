@@ -60,8 +60,9 @@ const Home: NextPage = () => {
         setConversationId(makeId(12))
     }, [user?.id])
 
-    const amountImages: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    const randomImage: number = amountImages[Math.floor(Math.random() * amountImages.length)]
+    // TODO: CURRENT AMOUNT OF IMAGES UPLOADED ON STORAGE
+    const amountImages: number = 32;
+    const randomImage: number = Math.floor(Math.random() * amountImages)
 
     useEffect(() => {
         if (!user) {
