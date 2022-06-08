@@ -53,7 +53,7 @@ export default function SignUp() {
                                         autoComplete="email"
                                         required
                                         placeholder={"Write your email"}
-                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"
                                     />
                                 </div>
                             </div>
@@ -70,7 +70,7 @@ export default function SignUp() {
                                         onChange={(e)=> setUsername(e.target.value)}
                                         required
                                         placeholder={"Write your username"}
-                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"
                                     />
                                 </div>
                             </div>
@@ -89,7 +89,7 @@ export default function SignUp() {
                                         autoComplete="current-password"
                                         required
                                         placeholder={"Write your password"}
-                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"
                                     />
                                 </div>
                             </div>
@@ -99,7 +99,7 @@ export default function SignUp() {
                             </label>
                             <div className="mb-5">
                                 <div
-                                    className={"appearance-none flex flex-col items-center justify-between w-full px-3 py-2 border-2 border-whiteBorder rounded-[25px] bg-dark text-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"}
+                                    className={"appearance-none flex flex-col items-center justify-between w-full px-3 py-2 border-2 border-whiteBorder rounded-[25px] bg-dark text-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"}
                                 >
                                     <span className={"text-left w-full"}>Choose a color</span>
                                     <div className={"grid grid-cols-2 gap-5 justify-center my-2"}>

@@ -42,7 +42,7 @@ export default function Auth() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         placeholder={"What's your email?"}
-                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"
                                     />
                                 </div>
                             </div>
@@ -60,7 +60,7 @@ export default function Auth() {
                                         autoComplete="current-password"
                                         required
                                         placeholder={"What's your password?"}
-                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                        className="appearance-none block w-full px-3 py-2 border-2 border-whiteBorder rounded-full bg-dark placeholder-gray-400 focus:outline-none focus:ring-[#A5678E] focus:border-[#A5678E] sm:text-sm"
                                     />
                                 </div>
                             </div>
