@@ -16,7 +16,7 @@ const Navbar = ({isAdmin, isConversations}: Navbar) => {
     const router = useRouter()
 
     return (
-        <div className={"w-full"}>
+        <div className={"w-full relative"}>
             <div className={classNames("w-full flex items-center px-6 pt-6",
                 isAdmin ? "justify-between" : "justify-end")}>
                 {(isAdmin && !isConversations) && (

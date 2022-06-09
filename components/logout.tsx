@@ -13,7 +13,7 @@ const Logout = ({setLogout}: Logout) => {
         router.push('/login')
     }
     return(
-        <div className={"w-full h-24 font-Inter text-whiteBorder flex flex-col items-center py-4"}>
+        <div className={"w-full h-24 font-Inter text-whiteBorder flex flex-col items-center py-4 fixed top-12 left- 0 z-50"}>
             <span className={"font-semibold"}>Do you want to logout?</span>
             <div className={"w-52 h-10 border-green-200 flex items-center justify-between px-7"}>
                 <button onClick={handleLogout}>Yes</button>

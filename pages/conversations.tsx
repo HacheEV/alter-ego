@@ -78,7 +78,7 @@ const Conversations: NextPage = () => {
             {(user && conversations.length > 0) ? (
                 <div className={"flex flex-col items-center justify-start"}>
                     <Navbar isAdmin={profile?.role === 1} isConversations={true}/>
-                    <div className={"flex flex-col items-center w-full h-32 leading-3 mt-14"}>
+                    <div className={"flex flex-col items-center w-full h-32 leading-3 mt-20"}>
                         <span className={"text-white font-Inter text-3xl font-medium"}>{totalInteractions}</span>
                         <span className={"text-white font-Inter text-md font-light"}>Interactions</span>
                         <div className={"w-[80%] border-b border-whiteBorder my-4"}></div>
