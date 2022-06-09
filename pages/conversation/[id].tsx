@@ -41,14 +41,6 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<any>()
     const [grid, setGrid] = useState<boolean>(false)
-    // const [border, setBorder] = useState<string>()
-    //
-    //
-    // useMemo(() => {
-    //     setBorder(`border-4 ${userColor}`)
-    // }, [])
-    //
-    // console.log(border)
 
     useEffect(() => {
         if (!user) {
@@ -142,7 +134,6 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
 
                             </div>
                             <div className={"flex items-start justify-center h-full mt-5"}>
-                                {/*<div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>*/}
                                 <div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
                                     <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                            width={300}
@@ -163,7 +154,6 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                                 <Image src={AlterAvatar} width={250} height={250}/>
                                             </div>
                                         ) : (
-                                            // <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>
                                             <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
                                                 <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                        width={300}
