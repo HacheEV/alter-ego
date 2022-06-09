@@ -18,6 +18,7 @@ interface Profile {
 }
 interface Conversations{
     conversations: Conversation[];
+    interactions: number;
 }
 interface Conversation{
     conversation_detail: any;
@@ -32,11 +33,10 @@ interface ConversationProfile{
     border: string;
 }
 
-const Conversations: NextPage<Conversations> = ({conversations}: Conversations) => {
+const Conversations: NextPage<Conversations> = ({conversations, interactions}: Conversations) => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
-    const [totalInteractions, setTotalInteractions] = useState<number>(0)
 
     useEffect(() => {
         if (!user) {
@@ -63,23 +63,13 @@ const Conversations: NextPage<Conversations> = ({conversations}: Conversations) 
 
     }, [setProfile])
 
-    const getConversationDetails = async () => {
-        const {data, error} = await supabase.from('conversation_detail')
-            .select()
-        if(error) console.log(error)
-        if(data) setTotalInteractions(data.length)
-    }
-    useEffect(() => {
-        getConversationDetails()
-    }, [])
-
     return (
         <>
             {(user && conversations.length > 0) ? (
                 <div className={"flex flex-col items-center justify-start"}>
                     <Navbar isAdmin={profile?.role === 1} isConversations={true}/>
                     <div className={"flex flex-col items-center w-full h-32 leading-3 mt-20"}>
-                        <span className={"text-white font-Inter text-3xl font-medium"}>{totalInteractions}</span>
+                        <span className={"text-white font-Inter text-3xl font-medium"}>{interactions}</span>
                         <span className={"text-white font-Inter text-md font-light"}>Interactions</span>
                         <div className={"w-[80%] border-b border-whiteBorder my-4"}></div>
                         <span className={"text-white font-Inter text-xl font-medium"}>{conversations.length}</span>
@@ -132,6 +122,7 @@ const Conversations: NextPage<Conversations> = ({conversations}: Conversations) 
 }
 export async function getServerSideProps({params}: GetStaticPropsContext) {
     let conversations;
+    let interactions;
 
     const {data, error} = await supabase.from('conversations')
         .select(`id, email, created_at, profiles(username, color), conversation_detail(selfie_url)`)
@@ -146,8 +137,11 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
             }
         ))
     }
-
-    return { props: { conversations } }
+    const {data: conversation_detail, error: conversation_error} = await supabase.from('conversation_detail')
+        .select()
+    if(conversation_error) console.log(conversation_error)
+    if(conversation_detail) interactions = conversation_detail.length
+    return { props: { conversations, interactions } }
 }
 
 export default Conversations;
