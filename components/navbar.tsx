@@ -4,6 +4,8 @@ import CloseIcon from '../public/close.png'
 import {classNames} from "../utils/classnames";
 import {supabase} from "../utils/supabase-client";
 import {useRouter} from "next/router";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faXmark} from "@fortawesome/free-solid-svg-icons";
 
 interface Navbar {
     isAdmin: boolean;
