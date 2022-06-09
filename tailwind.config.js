@@ -16,7 +16,8 @@ module.exports = {
         select2: '#7FACD6',
         select3: '#BFB8DA',
         select4: '#E8B7DA',
-        select5: '#A5678E'
+        select5: '#A5678E',
+        user: "var(--user-color)"
       },
       keyframes: {
         pulse: {

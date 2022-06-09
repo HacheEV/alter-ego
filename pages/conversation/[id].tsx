@@ -31,12 +31,13 @@ interface ConversationUser{
 interface Props{
     conversationDetail: ConversationDetail[];
     conversationAndUser: ConversationUser;
-    userCardBorder:string;
-    userColorBorder: string;
+    // userCardBorder:string;
+    // userColorBorder: string;
+    userColor:string;
 }
 
 
-const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUser, userCardBorder, userColorBorder}) => {
+const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUser, userColor}) => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<any>()
@@ -67,8 +68,14 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
 
     }, [setProfile])
 
+    console.log(userColor)
     return (
         <>
+            <style jsx global>{`
+              :root {
+                --user-color: ${userColor};
+              }
+            `}</style>
             {(user) && (
                 <div className={"flex flex-col items-center font-Inter text-white"}>
                     <Navbar isAdmin={profile?.role === 1} isConversations={false}/>
@@ -81,7 +88,7 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                     <span className={"mr-14 mt-2 text-sm font-semibold"}>@sofiatarragona</span>
                                 </div>
                                 <div className={"flex flex-col items-center absolute top-0 right-0 w-36 z-20"}>
-                                    <div className={classNames("w-28 h-28 rounded-full p-1 overflow-hidden", userCardBorder)}>
+                                    <div className={classNames("w-28 h-28 rounded-full p-1 overflow-hidden border-[3px] border-user")}>
                                         <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                width={300}
                                                height={300}
@@ -134,7 +141,7 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
 
                             </div>
                             <div className={"flex items-start justify-center h-full mt-5"}>
-                                <div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
+                                <div className={classNames("w-14 h-14 rounded-full p-1 overflow-hidden")}>
                                     <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                            width={300}
                                            height={300}
@@ -154,7 +161,7 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                                 <Image src={AlterAvatar} width={250} height={250}/>
                                             </div>
                                         ) : (
-                                            <div className={classNames("w-16 h-16 border-2 rounded-full p-0.5 overflow-hidden", userColorBorder)}>
+                                            <div className={classNames("w-16 h-16 rounded-full p-0.5 overflow-hidden border-[3px] border-user")}>
                                                 <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                        width={300}
                                                        height={300}
@@ -182,8 +189,7 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
     const id = params?.id as string;
     let conversationDetail;
     let conversationAndUser;
-    let userCardBorder;
-    let userColorBorder;
+    let userColor;
 
     if(id){
         const {data, error} = await supabase.from('conversation_detail')
@@ -204,12 +210,10 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
     if(error) console.log(error)
     if (data) {
         conversationAndUser = data[0];
-        // userColor = data[0].profiles.color
-        userCardBorder = `border-4 border-[${data[0].profiles.color}]`
-        userColorBorder = `border-[3px] border-[${data[0].profiles.color}]`
+        userColor = data[0].profiles.color
     }
 
-    return { props: { conversationDetail, conversationAndUser, userCardBorder,userColorBorder  } }
+    return { props: { conversationDetail, conversationAndUser, userColor } }
 }
 
 export default ConversationId;
