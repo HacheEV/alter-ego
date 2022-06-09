@@ -272,6 +272,8 @@ const Home: NextPage = () => {
                     <div className={"w-full h-full absolute top-0 left-0 z-20"}>
                         <Image src={selectedImage} layout={"fill"} className={"object-fill"}/>
                     </div>
+                    <div className={"w-full h-full absolute top-0 left-0 bg-black z-30 opacity-30"}>
+                    </div>
                     <div className={"absolute top-6 right-6 z-30"}>
                         <button
                             onClick={handleCloseImage}
@@ -281,12 +283,12 @@ const Home: NextPage = () => {
                         </button>
                     </div>
                     {loading ? (
-                        <div className={"flex flex-col items-center z-30 h-32 mb-16"}>
+                        <div className={"flex flex-col items-center z-40 h-32 mb-16"}>
                             <AvatarSpinner isLoader={true}/>
                         </div>
                     ) : (!endGame &&
                         <>
-                            <div className={"flex items-center w-full justify-start z-30 h-32 mb-16"}>
+                            <div className={"flex items-center w-full justify-start z-40 h-32 mb-16"}>
                                 <div className={"w-14 h-16 relative ml-4 mt-5"}>
                                     <Image src={Upload} width={25} height={25}
                                            className={"absolute top-4 left-2 z-30"}/>
@@ -309,7 +311,7 @@ const Home: NextPage = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <span className={"z-30 text-black mt-2 text-whiteBorder"}>Send image</span>
+                                    <span className={"z-40 text-black mt-2 text-whiteBorder"}>Send image</span>
                                 </div>
                             </div>
                         </>
