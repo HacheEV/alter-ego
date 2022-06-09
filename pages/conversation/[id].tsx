@@ -1,7 +1,7 @@
 import {GetStaticPropsContext, NextPage} from "next";
 import {useRouter} from "next/router";
 import {supabase} from "../../utils/supabase-client";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import Image from "next/image";
 import Navbar from "../../components/navbar";
 import AlterAvatar from "../../public/alter-avatar.png";
@@ -31,15 +31,24 @@ interface ConversationUser{
 interface Props{
     conversationDetail: ConversationDetail[];
     conversationAndUser: ConversationUser;
-    userBorder: string;
+    userCardBorder:string;
+    userColorBorder: string;
 }
 
 
-const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUser, userBorder}) => {
+const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUser, userCardBorder, userColorBorder}) => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<any>()
     const [grid, setGrid] = useState<boolean>(false)
+    // const [border, setBorder] = useState<string>()
+    //
+    //
+    // useMemo(() => {
+    //     setBorder(`border-4 ${userColor}`)
+    // }, [])
+    //
+    // console.log(border)
 
     useEffect(() => {
         if (!user) {
@@ -80,7 +89,7 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                     <span className={"mr-14 mt-2 text-sm font-semibold"}>@sofiatarragona</span>
                                 </div>
                                 <div className={"flex flex-col items-center absolute top-0 right-0 w-36 z-20"}>
-                                    <div className={classNames("w-28 h-28 border-4 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>
+                                    <div className={classNames("w-28 h-28 rounded-full p-1 overflow-hidden", userCardBorder)}>
                                         <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                width={300}
                                                height={300}
@@ -133,7 +142,8 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
 
                             </div>
                             <div className={"flex items-start justify-center h-full mt-5"}>
-                                <div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>
+                                {/*<div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>*/}
+                                <div className={classNames("w-14 h-14 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
                                     <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                            width={300}
                                            height={300}
@@ -153,7 +163,8 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                                 <Image src={AlterAvatar} width={250} height={250}/>
                                             </div>
                                         ) : (
-                                            <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>
+                                            // <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userBorder ? userBorder.toLocaleString() : "border-whiteBorder" )}>
+                                            <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
                                                 <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                        width={300}
                                                        height={300}
@@ -181,7 +192,8 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
     const id = params?.id as string;
     let conversationDetail;
     let conversationAndUser;
-    let userBorder;
+    let userCardBorder;
+    let userColorBorder;
 
     if(id){
         const {data, error} = await supabase.from('conversation_detail')
@@ -202,10 +214,12 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
     if(error) console.log(error)
     if (data) {
         conversationAndUser = data[0];
-        userBorder = `border-[${data[0].profiles.color}]`
+        // userColor = data[0].profiles.color
+        userCardBorder = `border-4 border-[${data[0].profiles.color}]`
+        userColorBorder = `border-2 border-[${data[0].profiles.color}]`
     }
 
-    return { props: { conversationDetail, conversationAndUser, userBorder } }
+    return { props: { conversationDetail, conversationAndUser, userCardBorder,userColorBorder  } }
 }
 
 export default ConversationId;
