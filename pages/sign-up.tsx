@@ -32,7 +32,6 @@ export default function SignUp() {
             setLoading(false)
         }
     }
-    console.log(color)
     return (
         <>
             <div className="min-h-full flex flex-col justify-center items-center bg-dark h-screen text-white px-2 py-3">

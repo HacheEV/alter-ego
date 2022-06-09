@@ -68,7 +68,6 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
 
     }, [setProfile])
 
-    console.log(userColor)
     return (
         <>
             <style jsx global>{`

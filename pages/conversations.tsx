@@ -62,14 +62,8 @@ const Conversations: NextPage<Conversations> = ({conversations, interactions}: C
         }
 
     }, [setProfile])
-    console.log(conversations)
     return (
         <>
-            {/*<style jsx global>{`*/}
-            {/*  :root {*/}
-            {/*    --user-color: ${council?.color || "#00a6ff"};*/}
-            {/*  }*/}
-            {/*`}</style>*/}
             {(user && conversations.length > 0) ? (
                 <div className={"flex flex-col items-center justify-start"}>
                     <Navbar isAdmin={profile?.role === 1} isConversations={true}/>
@@ -89,7 +83,8 @@ const Conversations: NextPage<Conversations> = ({conversations, interactions}: C
                                                 className="col-span-1 bg-dark w-44">
                                                 <div className="w-full flex flex-col items-center py-6 px-3">
                                                     <div
-                                                        className={classNames("w-16 h-16 rounded-full my-2 flex items-center justify-center", conversation.profiles.border)}>
+                                                        style={{ "--user-color": conversation.profiles.color.toString() } as React.CSSProperties}
+                                                        className={classNames("w-16 h-16 rounded-full my-2 flex items-center justify-center border-[3px] border-user")}>
                                                         <div
                                                             className={"relative w-[3.3rem] h-[3.3rem] rounded-full overflow-hidden"}>
                                                             <Image src={conversation.conversation_detail[1] ? conversation.conversation_detail[1].selfie_url : "/alter-avatar.png"}
@@ -132,18 +127,18 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
     const {data, error} = await supabase.from('conversations')
         .select(`id, email, created_at, profiles(username, color), conversation_detail(selfie_url)`)
     if(error) console.log(error)
-/*    if (data) conversations = data;*/
-    if (data)
-    {
-        conversations = data.map((conversation:any) => (
-            {...conversation,
-                profiles: {
-                    ...conversation.profiles,
-                    border: `border-[3px] border-[${conversation.profiles.color}]`
-                }
-            }
-        ))
-    }
+    if (data) conversations = data;
+    // if (data)
+    // {
+    //     conversations = data.map((conversation:any) => (
+    //         {...conversation,
+    //             profiles: {
+    //                 ...conversation.profiles,
+    //                 border: `border-[3px] border-[${conversation.profiles.color}]`
+    //             }
+    //         }
+    //     ))
+    // }
     const {data: conversation_detail, error: conversation_error} = await supabase.from('conversation_detail')
         .select()
     if(conversation_error) console.log(conversation_error)
