@@ -9,6 +9,7 @@ import CloseIcon from "../public/close.png";
 import {classNames} from "../utils/classnames";
 import Link from "next/link";
 import moment from "moment";
+import Navbar from "../components/navbar";
 
 interface Profile {
     id: string;
@@ -76,26 +77,8 @@ const Conversations: NextPage = () => {
         <>
             {(user && conversations.length > 0) ? (
                 <div className={"flex flex-col items-center justify-start"}>
-                    <div className={"w-full h-[10%] flex items-center justify-between px-4 pt-6"}>
-                        <button
-                            onClick={() => router.push('/')}
-                            type="button"
-                            className="text-white"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                        </button>
-                        <button
-                            onClick={handleLogout}
-                            type="button"
-                            className="text-white"
-                        >
-                            <Image src={CloseIcon} width={20} height={20} alt={"Conversation icon"}/>
-                        </button>
-                    </div>
-                    <div className={"flex flex-col items-center w-full h-32 leading-3 mt-14"}>
+                    <Navbar isAdmin={profile?.role === 1} isConversations={true}/>
+                    <div className={"flex flex-col items-center w-full h-32 leading-3 mt-20"}>
                         <span className={"text-white font-Inter text-3xl font-medium"}>{totalInteractions}</span>
                         <span className={"text-white font-Inter text-md font-light"}>Interactions</span>
                         <div className={"w-[80%] border-b border-whiteBorder my-4"}></div>

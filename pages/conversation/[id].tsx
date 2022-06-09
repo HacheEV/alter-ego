@@ -71,8 +71,8 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
         <>
             {(user) && (
                 <div className={"flex flex-col items-center font-Inter text-white"}>
-                    <Navbar isAdmin={profile?.role === 1}/>
-                    <div className={"flex items-center justify-center w-full h-28"}>
+                    <Navbar isAdmin={profile?.role === 1} isConversations={false}/>
+                    <div className={"flex items-center justify-center w-full h-28 mt-8"}>
                             <div className={"relative w-52"}>
                                 <div className={"flex flex-col items-center absolute top-0 left-0 w-36 z-0"}>
                                     <div className={"w-28 h-28 border-4 border-whiteBorder rounded-full p-1"}>
