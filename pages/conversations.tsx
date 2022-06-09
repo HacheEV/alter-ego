@@ -5,23 +5,38 @@ import {useEffect, useState} from "react";
 import Image from 'next/image'
 import RightArrow from '../public/rightblue.png'
 import NotAllowed from "../components/not-allowed";
-import CloseIcon from "../public/close.png";
 import {classNames} from "../utils/classnames";
 import Link from "next/link";
 import moment from "moment";
 import Navbar from "../components/navbar";
+import {GetStaticPropsContext} from "next";
 
 interface Profile {
     id: string;
     username: string;
     role: number;
 }
+interface Conversations{
+    conversations: Conversation[];
+}
+interface Conversation{
+    conversation_detail: any;
+    created_at:string;
+    email: string;
+    id: string;
+    profiles: ConversationProfile;
+}
+interface ConversationProfile{
+    username: string;
+    color: string;
+    border: string;
+}
 
-const Conversations: NextPage = () => {
+const Conversations: NextPage<Conversations> = ({conversations}: Conversations) => {
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
-    const [conversations, setConversations] = useState<any>([])
+    // const [conversations, setConversations] = useState<any>([])
     const [totalInteractions, setTotalInteractions] = useState<number>(0)
 
     useEffect(() => {
@@ -49,19 +64,6 @@ const Conversations: NextPage = () => {
 
     }, [setProfile])
 
-    const handleLogout = async () => {
-        const {error} = await supabase.auth.signOut()
-        if (error) console.log(error)
-        router.push('/login')
-    }
-    const getConversations = async () => {
-        const {data, error} = await supabase.from('conversations')
-            .select(`id, email, created_at, profiles(username, color), conversation_detail(selfie_url)`)
-        if(error) console.log(error)
-        if (data) {
-            setConversations(data)
-        }
-    }
     const getConversationDetails = async () => {
         const {data, error} = await supabase.from('conversation_detail')
             .select()
@@ -69,10 +71,9 @@ const Conversations: NextPage = () => {
         if(data) setTotalInteractions(data.length)
     }
     useEffect(() => {
-        getConversations()
         getConversationDetails()
     }, [])
-
+    console.log(conversations)
     return (
         <>
             {(user && conversations.length > 0) ? (
@@ -89,14 +90,15 @@ const Conversations: NextPage = () => {
                             <div className="w-full px-2  rounded-md py-6 sm:px-6 lg:px-8">
                                 <ul role="list" className="font-Inter grid grid-cols-2 gap-6 sm:grid-cols-2">
                                     {conversations.map((conversation: any, index: number) => {
-                                        const border = `border-[${conversation.profiles.color}]`
+                                        // const border = `border-[3px] border-[${conversation.profiles.color}]`
+                                        // console.log(conversation.profiles.border)
+                                        // console.log("border-[#33539E]" === conversation.profiles.border)
                                         return (
                                             <li key={index}
                                                 className="col-span-1 bg-dark w-44">
                                                 <div className="w-full flex flex-col items-center py-6 px-3">
                                                     <div
-                                                        className={classNames("w-16 h-16 rounded-full border-[3px] my-2 flex items-center justify-center", border ? border : "border-whiteBorder"
-                                                        )}>
+                                                        className={classNames(`w-16 h-16 rounded-full my-2 flex items-center justify-center ${conversation.profiles.border}`)}>
                                                         <div
                                                             className={"relative w-[3.3rem] h-[3.3rem] rounded-full overflow-hidden"}>
                                                             <Image src={conversation.conversation_detail[1] ? conversation.conversation_detail[1].selfie_url : "/alter-avatar.png"}
@@ -131,6 +133,25 @@ const Conversations: NextPage = () => {
 
         </>
     )
+}
+export async function getServerSideProps({params}: GetStaticPropsContext) {
+    let conversations;
+
+    const {data, error} = await supabase.from('conversations')
+        .select(`id, email, created_at, profiles(username, color), conversation_detail(selfie_url)`)
+    if(error) console.log(error)
+    if (data) {
+        conversations = data.map((conversation:any) => (
+            {...conversation,
+                profiles: {
+                    ...conversation.profiles,
+                    border: `border-[3px] border-[${conversation.profiles.color}]`
+                }
+            }
+        ))
+    }
+
+    return { props: { conversations } }
 }
 
 export default Conversations;
