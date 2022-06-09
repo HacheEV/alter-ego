@@ -112,7 +112,7 @@ const Conversations: NextPage = () => {
                                                 className="col-span-1 bg-dark w-44">
                                                 <div className="w-full flex flex-col items-center py-6 px-3">
                                                     <div
-                                                        className={classNames("w-16 h-16 rounded-full border-2 my-2 flex items-center justify-center", border ? border : "border-whiteBorder"
+                                                        className={classNames("w-16 h-16 rounded-full border-[3px] my-2 flex items-center justify-center", border ? border : "border-whiteBorder"
                                                         )}>
                                                         <div
                                                             className={"relative w-[3.3rem] h-[3.3rem] rounded-full overflow-hidden"}>
@@ -130,7 +130,7 @@ const Conversations: NextPage = () => {
                                                     <span
                                                         className={"text-white text-xs text-gray-400"}>{conversation.conversation_detail.length} interactions</span>
                                                     <Link href={`/conversation/${conversation.id}`}>
-                                                        <a className={"w-full flex items-center justify-center text-white mt-2"}>
+                                                        <a className={"w-full flex items-center justify-center text-white mt-2 h-12"}>
                                                             <span className={"underline text-select2 text-sm mr-1"}>View interactions</span>
                                                             <Image src={RightArrow} width={0} height={10}/>
                                                         </a>

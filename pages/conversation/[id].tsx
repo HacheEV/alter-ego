@@ -150,11 +150,11 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                     <div key={index} className={classNames("flex w-full mt-14", conversation.side === "left" ? "justify-start" : "flex-row-reverse")}>
 
                                         {conversation.side === "left" ? (
-                                            <div className={"w-16 h-16 border-2 border-whiteBorder rounded-full p-1"}>
+                                            <div className={"w-16 h-16 border-2 border-whiteBorder rounded-full p-0.5"}>
                                                 <Image src={AlterAvatar} width={250} height={250}/>
                                             </div>
                                         ) : (
-                                            <div className={classNames("w-16 h-16 border-2 rounded-full p-1 overflow-hidden", userColorBorder)}>
+                                            <div className={classNames("w-16 h-16 border-2 rounded-full p-0.5 overflow-hidden", userColorBorder)}>
                                                 <Image src={conversationDetail[1] ? conversationDetail[1].selfie_url : "/alter-avatar.png"}
                                                        width={300}
                                                        height={300}
@@ -163,7 +163,7 @@ const ConversationId: NextPage<Props> = ({conversationDetail, conversationAndUse
                                             </div>
                                         )}
                                         <div className={classNames("flex items-end w-44 ", conversation.side === "left" ? "justify-end" : "flex-row-reverse")}>
-                                            <div className={classNames("w-24 h-44  rounded-xl  p-1", conversation.side === "left" ? "ml-4" : "mr-6")}>
+                                            <div className={classNames("w-24 h-44  rounded-xl ", conversation.side === "left" ? "ml-4" : "mr-6")}>
                                                 <Image src={conversation.selfie_url} width={220} height={425} layout={"responsive"} className={"rounded-xl"}/>
                                             </div>
                                             <span className={classNames("text-xs font-bold", conversation.side === "left" ? "ml-2" : "mr-2")}>{moment(conversation.created_at).format('HH:mm')}</span>
@@ -206,7 +206,7 @@ export async function getServerSideProps({params}: GetStaticPropsContext) {
         conversationAndUser = data[0];
         // userColor = data[0].profiles.color
         userCardBorder = `border-4 border-[${data[0].profiles.color}]`
-        userColorBorder = `border-2 border-[${data[0].profiles.color}]`
+        userColorBorder = `border-[3px] border-[${data[0].profiles.color}]`
     }
 
     return { props: { conversationDetail, conversationAndUser, userCardBorder,userColorBorder  } }
