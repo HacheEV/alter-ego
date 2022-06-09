@@ -36,7 +36,6 @@ const Conversations: NextPage<Conversations> = ({conversations}: Conversations) 
     const router = useRouter()
     const user = supabase.auth.user();
     const [profile, setProfile] = useState<Profile>()
-    // const [conversations, setConversations] = useState<any>([])
     const [totalInteractions, setTotalInteractions] = useState<number>(0)
 
     useEffect(() => {
@@ -73,7 +72,7 @@ const Conversations: NextPage<Conversations> = ({conversations}: Conversations) 
     useEffect(() => {
         getConversationDetails()
     }, [])
-    console.log(conversations)
+
     return (
         <>
             {(user && conversations.length > 0) ? (
@@ -90,9 +89,6 @@ const Conversations: NextPage<Conversations> = ({conversations}: Conversations) 
                             <div className="w-full px-2  rounded-md py-6 sm:px-6 lg:px-8">
                                 <ul role="list" className="font-Inter grid grid-cols-2 gap-6 sm:grid-cols-2">
                                     {conversations.map((conversation: any, index: number) => {
-                                        // const border = `border-[3px] border-[${conversation.profiles.color}]`
-                                        // console.log(conversation.profiles.border)
-                                        // console.log("border-[#33539E]" === conversation.profiles.border)
                                         return (
                                             <li key={index}
                                                 className="col-span-1 bg-dark w-44">
