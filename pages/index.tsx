@@ -210,8 +210,8 @@ const Home: NextPage = () => {
         <>
             {!seeImageChat &&
                 <div className={"w-full h-full bg-dark flex flex-col items-center font-Inter"}>
-                    <Navbar isAdmin={profile?.role === 1}/>
-                    <div className={"w-full flex flex-col items-center mt-24"}>
+                    <Navbar isAdmin={profile?.role === 1} isConversations={false}/>
+                    <div className={"w-full flex flex-col items-center mt-16"}>
                         {imageReady ? (
                             <div className={"w-44 h-44 border-4 border-whiteBorder rounded-full p-2"}>
                                 <Image src={AlterAvatar} layout={"responsive"}/>
