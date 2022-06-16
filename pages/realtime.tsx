@@ -25,14 +25,14 @@ const RealTime: NextPage = () => {
 
     return (
         <>
-            <div className={"w-full relative h-screen flex flex-col items-center justify-end"}>
+            <div className={"w-full relative h-screen flex flex-col items-center justify-end sm:py-10"}>
                 {loading && (
-                    <div className={"w-full h-full absolute top-0 left-0 z-30 bg-dark flex items-center justify-center"}>
+                    <div className={"w-full h-full absolute top-0 left-0 z-30 bg-dark flex items-center justify-center "}>
                        <AvatarSpinner isLoader={true} />
                     </div>
                 )}
-                <div className={"w-full h-full absolute top-0 left-0 z-20"}>
-                    <Image src={image} layout={"fill"} className={"object-fill"} priority quality={50} onLoadingComplete={() => setLoading(false)} />
+                <div className={"w-full h-full absolute top-0 left-0 z-20 sm:w-80 sm:relative sm:rounded-md"}>
+                    <Image src={image} layout={"fill"} className={"object-fill sm:rounded-md"} priority quality={50} onLoadingComplete={() => setLoading(false)} />
                 </div>
 
             </div>
