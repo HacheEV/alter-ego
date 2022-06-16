@@ -85,6 +85,8 @@ const Home: NextPage = () => {
             .getPublicUrl(`app_selfies/${randomImage}.jpeg`)
         if (publicURL !== null) {
             setImageUrl(publicURL);
+            console.log(publicURL)
+            saveImage(publicURL);
             setImageReady(true)
             const alterAnswer = {src: publicURL, side: "left", created_at: moment().format()}
             setChat([...chat, alterAnswer])
@@ -121,6 +123,12 @@ const Home: NextPage = () => {
         } catch (err) {
             console.log(err)
         }
+    }
+    const saveImage = async (url: string) => {
+        const {error} = await supabase
+            .from('answers')
+            .insert([{imageUrl: url}])
+        if (error) console.log(error);
     }
 
     const handleUploadImage = async (e: any) => {
